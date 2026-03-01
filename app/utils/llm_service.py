@@ -1,6 +1,6 @@
 import os
 import logging
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
@@ -50,8 +50,7 @@ If not found, say: Not in documents.
 """
 
         # 3. LLM API Call
-        # We use a relatively low temperature so it sticks to the documents
-        llm = ChatOpenAI(temperature=0, model="gpt-3.5-turbo")
+        llm = ChatGoogleGenerativeAI(temperature=0, model="gemini-1.5-flash")
         
         response = llm.invoke(prompt)
         return response.content
