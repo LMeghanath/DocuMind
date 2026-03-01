@@ -29,6 +29,13 @@
 
 <div style="margin-top: 2rem;">
     <h3>Query Documents</h3>
-    <p><em>(Module 7: Retrieval System will be implemented here)</em></p>
+    <form action="{% url 'app:query' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="query">Ask a question about your uploaded documents:</label>
+            <input type="text" id="query" name="query" required placeholder="e.g. What is the main thesis?">
+        </div>
+        <button type="submit">Ask ContextIQ</button>
+    </form>
 </div>
 {% endblock %}

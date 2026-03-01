@@ -3,8 +3,13 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import UserRegistrationForm, DocumentUploadForm
-from .models import Document
+from .models import Document, QueryLog
 from .utils.file_handler import handle_uploaded_file, get_user_lock, calculate_file_hash
+from .utils.chunking import extract_and_chunk_file
+from .utils.faiss_store import add_documents_to_store
+from .utils.retrieval import retrieve_context
+from .utils.intent_classifier import classify_intent
+from .utils.llm_service import get_llm_response
 
 def register(request):
     if request.method == 'POST':
@@ -54,12 +59,17 @@ def upload_document(request):
                         messages.error(request, "A document with this name already exists (Duplicate).")
                         return redirect('app:upload')
 
-                    # 4. Save to DB
+                    # 4. Save to DB temporarily
                     document = form.save(commit=False)
                     document.user = request.user
                     document.save()
                     
-                    messages.success(request, f"Document '{document.file.name}' uploaded successfully!")
+                    # 5. Extract, Chunk, Embed and Store
+                    # We pass the absolute file path to the chunker
+                    chunks = extract_and_chunk_file(document.file.path)
+                    add_documents_to_store(request.user.id, chunks)
+                    
+                    messages.success(request, f"Document '{document.file.name}' uploaded and processed successfully!")
                     return redirect('app:dashboard')
                     
             except Exception as e:
@@ -70,3 +80,41 @@ def upload_document(request):
         
     return render(request, 'app/upload.html', {'form': form})
 
+@login_required
+def query_document(request):
+    if request.method == 'POST':
+        query = request.POST.get('query', '').strip()
+        if not query:
+            messages.error(request, "Query cannot be empty.")
+            return redirect('app:dashboard')
+
+        try:
+            # 1. Intent Classification
+            intent = classify_intent(query)
+            if intent == 'out-of-domain':
+                response_text = "This question is outside uploaded documents."
+            else:
+                # 2. Retrieval
+                context = retrieve_context(query, request.user.id)
+                
+                if context == "Not in documents":
+                    response_text = "Not in documents"
+                else:
+                    # 3. LLM Integration
+                    response_text = get_llm_response(query, context)
+            
+            # 4. Log Query
+            QueryLog.objects.create(
+                user=request.user,
+                query_text=query,
+                response=response_text
+            )
+            
+            # Pass data to template
+            return render(request, 'app/query_result.html', {'query': query, 'response': response_text})
+
+        except Exception as e:
+            messages.error(request, f"An error occurred while processing your query: {str(e)}")
+            return redirect('app:dashboard')
+
+    return redirect('app:dashboard')
