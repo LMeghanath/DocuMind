@@ -1,12 +1,39 @@
 {% load static %}
-<html>
-    <head>
-        <title>{% block title %} {% endblock title%}</title>
-        <link rel="stylesheet" href="{% static 'mainapp/homepage.css' %}">
-    </head>
-    <body>
-        {% block body %} 
-        {% endblock body %}
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}DocuMind-Docs to Knowledge{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'mainapp/homepage.css' %}">
+    <link rel="icon" href="{% static 'mainapp/favicon.png' %}">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <img src="{% static 'mainapp/favicon.png'%}" alt="DocuMind logo" style="width:100px;height:50px;vertical-align:middle;margin-right:8px;">
+                DocuMind
+            </div>
+            <ul class="nav-links">
+                <li><a href="#">Features</a></li>
+                <li><a href="#">How It Works</a></li>
+                <li><a href="#">Upload</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {% block body %}
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DocuMind. AI-powered Retrieval-Augmented Generation Platform.</p>
+        </div>
+    </footer>
+
+</body>
 </html>
-    

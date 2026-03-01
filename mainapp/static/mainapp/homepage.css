@@ -1,4 +1,175 @@
-h1{
-    font-family: cursive;
-    color: aqua;
+/* ===== Reset ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0c0f14;
+    color: #e5e7eb;
+    line-height: 1.7;
+    letter-spacing: 0.3px;
+}
+
+/* ===== Container ===== */
+.container {
+    width: 88%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+    background: rgba(17, 24, 39, 0.85);
+    backdrop-filter: blur(10px);
+    padding: 22px 0;
+    border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+    color: #22d3ee;
+    letter-spacing: 1px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 35px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #9ca3af;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #22d3ee;
+}
+
+/* ===== Buttons ===== */
+.btn-primary {
+    background: linear-gradient(135deg, #22d3ee, #06b6d4);
+    color: #0c0f14;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.35s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(34, 211, 238, 0.35);
+}
+
+.btn-secondary {
+    border: 1px solid rgba(34, 211, 238, 0.4);
+    color: #22d3ee;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: rgba(34, 211, 238, 0.1);
+    transform: translateY(-2px);
+}
+
+/* ===== Hero Section ===== */
+.hero {
+    padding: 150px 0;
+    text-align: center;
+    background: radial-gradient(circle at top, #111827, #0c0f14 65%);
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #9ca3af;
+    max-width: 750px;
+    margin: auto;
+    margin-bottom: 45px;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+/* ===== Features Section ===== */
+.features {
+    padding: 110px 0;
+    background: #111827;
+}
+
+.features h2 {
+    text-align: center;
+    font-size: 34px;
+    font-weight: 600;
+    margin-bottom: 70px;
+    color: #ffffff;
+}
+
+/* Grid */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 35px;
+}
+
+/* Feature Card */
+.feature-card {
+    background: rgba(31, 41, 55, 0.65);
+    backdrop-filter: blur(6px);
+    padding: 38px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.35s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(34, 211, 238, 0.4);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+}
+
+.feature-card h3 {
+    margin-bottom: 18px;
+    font-size: 19px;
+    font-weight: 500;
+    color: #e5e7eb;
+}
+
+.feature-card p {
+    color: #9ca3af;
+    font-size: 15px;
+}
+
+/* ===== Footer ===== */
+.footer {
+    background: #0c0f14;
+    padding: 40px 0;
+    text-align: center;
+    color: #6b7280;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 14px;
 }
