@@ -9,7 +9,22 @@
 
 <div style="margin-top: 2rem;">
     <h3>Your Documents</h3>
-    <p><em>(Module 3: File Upload System will be implemented here)</em></p>
+    <a href="{% url 'app:upload' %}"
+        style="display:inline-block; margin-bottom: 1rem; padding: 0.5rem 1rem; background: #28a745; color: white; text-decoration: none; border-radius: 4px;">+
+        Upload Document</a>
+
+    {% if documents %}
+    <ul>
+        {% for doc in documents %}
+        <li>
+            <strong>{{ doc.file.name }}</strong>
+            <span style="color: #666; font-size: 0.9em;">(Uploaded on {{ doc.uploaded_at|date:"M d, Y H:i" }})</span>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>You haven't uploaded any documents yet.</p>
+    {% endif %}
 </div>
 
 <div style="margin-top: 2rem;">
