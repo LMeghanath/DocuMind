@@ -119,5 +119,6 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 # Auth redirects
+LOGIN_URL = 'app:login'
 LOGIN_REDIRECT_URL = 'app:dashboard'
 LOGOUT_REDIRECT_URL = 'app:login'
