@@ -25,8 +25,10 @@ SECRET_KEY = 'django-insecure-6#t^m)k5%$apf$15^oteuo(dwu)(==4!^49dd5kd71#%&5v#ly
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+STATIC_URL = 'static/'
+#STATIC_ROOT = BASE_DIR / "staticfiles"
 
+ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -68,6 +70,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
 
 
 # Database

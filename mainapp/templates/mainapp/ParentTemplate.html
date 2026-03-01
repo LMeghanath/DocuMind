@@ -1,0 +1,12 @@
+{% load static %}
+<html>
+    <head>
+        <title>{% block title %} {% endblock title%}</title>
+        <link rel="stylesheet" href="{% static 'mainapp/homepage.css' %}">
+    </head>
+    <body>
+        {% block body %} 
+        {% endblock body %}
+    </body>
+</html>
+    
