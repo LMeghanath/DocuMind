@@ -1,6 +1,6 @@
-## ContextIQ — Intelligent Document Retrieval using RAG
+## DocuMind — Intelligent Document Retrieval using RAG
 
-ContextIQ is a Retrieval-Augmented Generation (RAG) based system that enables users to upload documents and query them using natural language. The system processes documents through text extraction, preprocessing, chunking, and embedding, and stores them in a per-user FAISS vector index for efficient semantic search.
+DocuMind is a Retrieval-Augmented Generation (RAG) based system that enables users to upload documents and query them using natural language. The system processes documents through text extraction, preprocessing, chunking, and embedding, and stores them in a per-user FAISS vector index for efficient semantic search.
 
 It implements controlled retrieval with top-k selection, similarity thresholding, and context filtering to minimize hallucinations. An intent classifier (Logistic Regression) is used to distinguish in-domain and out-of-domain queries, ensuring reliable responses.
 
