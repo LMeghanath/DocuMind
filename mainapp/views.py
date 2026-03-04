@@ -224,5 +224,5 @@ def password_reset_view(request):
             else:
                 return redirect("password_reset")
 
-        return render(request,"mainapp/password_reset.html")    
+    return render(request,"mainapp/password_reset.html")    
             

@@ -43,6 +43,23 @@
     text-align: left;
     margin-bottom: 20px;
 }
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 35px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #9ca3af;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #22d3ee;
+}
+
 
 .form-group label {
     font-size: 13px;

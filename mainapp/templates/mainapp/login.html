@@ -35,7 +35,14 @@
                 </div>
             {% endfor %}
         {% endif %}
-        <a href="{% url 'signup' %}">Create an account instead.</a>
+        <br>
+        <div  class="nav-links">
+        <ul style="list-style: none;" >       
+        <li><a href="{% url 'password_reset' %}">Forgot password.</a></li>
+        
+        <li><a href="{% url 'signup' %}">Create an account instead.</a></li>
+        </ul>    
+        </div>
     </div>
 </div>
 
