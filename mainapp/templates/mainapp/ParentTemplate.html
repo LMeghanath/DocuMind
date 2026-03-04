@@ -6,6 +6,7 @@
     <title>{% block title %}DocuMind-Docs to Knowledge{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'mainapp/homepage.css' %}">
     <link rel="icon" href="{% static 'mainapp/favicon.png' %}">
+    {% block extra_css %}{% endblock extra_css %}
 </head>
 <body>
 
@@ -17,10 +18,10 @@
                 DocuMind
             </div>
             <ul class="nav-links">
-                <li><a href="#">Features</a></li>
-                <li><a href="#">How It Works</a></li>
-                <li><a href="#">Upload</a></li>
-                <li><a href="#">Login</a></li>
+                <li><a href="/#feature-card">Features</a></li>
+                <li><a href="/#working">How It Works</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="#">Signup</a></li>
             </ul>
         </div>
     </nav>

@@ -1,0 +1,98 @@
+/* ===== Login Page Styling (Matches Homepage Theme) ===== */
+
+.login-container {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card */
+.login-card {
+    background: rgba(31, 41, 55, 0.65);
+    backdrop-filter: blur(8px);
+    padding: 40px;
+    width: 380px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.login-card:hover {
+    border-color: rgba(34, 211, 238, 0.4);
+}
+
+/* Heading */
+.login-card h2 {
+    margin-bottom: 10px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #9ca3af;
+    margin-bottom: 28px;
+}
+
+/* Form */
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: #9ca3af;
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* Inputs */
+.form-group input {
+    width: 100%;
+    padding: 11px;
+    background: #0c0f14;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    color: #e5e7eb;
+    transition: all 0.3s ease;
+}
+
+.form-group input::placeholder {
+    color: #6b7280;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #22d3ee;
+    box-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
+}
+
+/* Button */
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #22d3ee, #06b6d4);
+    color: #0c0f14;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.35s ease;
+}
+
+.login-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(34, 211, 238, 0.35);
+}
+
+/* Error Message */
+.error-message {
+    margin-top: 15px;
+    color: #f87171;
+    font-size: 13px;
+}
