@@ -2,12 +2,13 @@
 {% load static %}
 
 {% block title %}
-    DocuMind-Query Documents
+    DocuMind-User Profile
 {% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'mainapp/chatpage.css' %}">
+    <link rel="stylesheet" href="{% static 'mainapp/profile.css' %}">
 {% endblock extra_css %}
 
 {% block body %}
+    <a href="{% url 'delete_account' %}">Delete account</a>
 {% endblock %}
