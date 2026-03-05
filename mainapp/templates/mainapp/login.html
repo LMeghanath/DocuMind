@@ -30,7 +30,7 @@
 
         {% if messages %}
             {% for message in messages %}
-                <div class="error-message">
+                <div class="message {{ message.tags }}">
                     {{ message }}
                 </div>
             {% endfor %}

@@ -9,6 +9,13 @@ DocuMind-Docs to Knowledge
 <!-- Hero Section -->
 <section class="hero">
     <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
         <h1>Turn Your Documents Into Intelligent Conversations</h1>
         <p>
             DocuMind is a Retrieval-Augmented Generation (RAG) powered platform 

@@ -77,7 +77,7 @@ def signup_view(request):
                 return redirect("signup")
             
             if User.objects.filter(email=email).exists():
-                messages.error(request, "Email already registered.")
+                messages.error(request, "An account exists with this email.Try login instead.")
                 return redirect("signup")
 
             request.session["email"]=email
@@ -110,7 +110,7 @@ def signup_view(request):
                 return redirect("signup")
             
             if User.objects.filter(username=username).exists():
-                messages.error(request, "Username already registered.")
+                messages.error(request, "Username already registered.Try a different username.")
                 return redirect("signup")
 
             password=request.POST.get("password","")
@@ -221,7 +221,7 @@ def password_reset_view(request):
                 user.save()
                 request.session.flush()
                 messages.success(request,"Password has been successfully reset. \n Please login.")
-                return redirect("password_reset")
+                return redirect("login")
             else:
                 return redirect("password_reset")
 
