@@ -149,6 +149,7 @@ def delete_account_view(request):
     clear_sessions_password_reset(request)
     user=request.user
     user.delete()
+    messages.success(request,"Account has been successfully deleted.")
     return redirect("homepage")
 
 def password_reset_view(request):
@@ -179,10 +180,10 @@ def password_reset_view(request):
                     request.session["reset_stage"]="otp" 
                 else:
                     messages.error(request,"Failed to send OTP.")
-                    return render("password_reset")
+                    return redirect("password_reset")
             else:
                 messages.error(request,"Please enter a registered mail id.")
-                return render("password_reset")
+                return redirect("password_reset")
         
         elif stage=="otp":
 
@@ -199,7 +200,7 @@ def password_reset_view(request):
                 request.session["reset_stage"]="credentials"
             else:
                 messages.error(request,"Please enter a valid otp.")
-                return render("password_reset")
+                return redirect("password_reset")
         else:
             #-------------stage 3--------------#
             password=request.POST.get("password","")

@@ -72,13 +72,12 @@ def send_otp(request,email):
 
 def clear_sessions_signup(request):
     request.session.pop("signup_stage",None)
-    request.session.pop("hashed_otp",None)
     request.session.pop("email",None)
     
 def clear_sessions_password_reset(request):
     request.session.pop("reset_stage",None)
     request.session.pop("reset_email",None)
-    request.session.pop("hashed_otp",None)
+    
 
 def verify_otp(request,otp):
     return check_password(otp,request.session.get("hashed_otp"))
