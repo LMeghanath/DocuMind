@@ -7,7 +7,7 @@ from .utils import password_checking,verify_otp,send_otp,clear_sessions_signup,c
 
 """
 IMP
-clear_sessions() - user defined function to clear residual sessions of signup_view 
+clear_sessions_signup() and clear_sessions_password_reset() - user defined function to clear residual sessions of signup_view 
 used to carry out a multi stage form for user registration.
 It will not affect sessions related to user-object which is used to check login status , etc. 
 """

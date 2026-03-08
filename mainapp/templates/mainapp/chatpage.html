@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-    DocuMind-Query Documents
+    DocuMind-Chat
 {% endblock %}
 
 {% block extra_css %}
@@ -10,4 +10,61 @@
 {% endblock extra_css %}
 
 {% block body %}
+
+<div class="chat-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <button class="new-chat-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          New chat
+        </button>
+      </div>
+      <nav class="sidebar-history">
+        <div class="history-section">
+        <pre>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+            
+        </pre>
+          
+        </div>
+      </nav>
+    </aside>
+    <!-- Main -->
+    <main class="main">
+      <!-- Chat Messages -->
+      <div class="chat-messages">
+        <!-- Chat messages will be displayed here -->
+      </div>
+      <!-- Input area -->
+      <div class="input-area">
+        <div class="input-container">
+          <div class="input-wrapper">
+            <textarea class="chat-textarea" rows="1" placeholder="Query your documents…"></textarea>
+            <button class="send-btn" disabled>
+              Send
+            </button>
+          </div>
+          <div class="disclaimer">DocuMind can make mistakes. Check important info.</div>
+        </div>
+      </div>
+    </main>
+  </div>
 {% endblock %}
+
