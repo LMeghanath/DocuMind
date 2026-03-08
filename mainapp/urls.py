@@ -11,6 +11,5 @@ urlpatterns = [
     path('profile/',views.profile_view,name='profile'),
     path('delete_account/',views.delete_account_view,name='delete_account'),
     path('password_reset/',views.password_reset_view,name='password_reset'),
-    path('password_reset/',views.password_reset_view,name='password_reset'),
     path('upload_docs/',file_upload_utility.upload_docs,name="upload_docs"),
 ]

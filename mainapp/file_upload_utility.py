@@ -80,5 +80,6 @@ def upload_docs(request):
             profile.document_count += 1
             profile.total_storage += doc.size
             profile.save()
+        return redirect('chatpage')    
 
     return render(request,"mainapp/chatpage.html")        

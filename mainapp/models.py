@@ -11,7 +11,7 @@ class Profile(models.Model):
     subscription_type=models.CharField(max_length=20,default="Free")
     
     def __str__(self):
-        return f"{self.user.name} Profile" 
+        return f"{self.user.username} Profile" 
 
 class Document(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)

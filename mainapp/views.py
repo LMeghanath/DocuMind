@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth  import authenticate ,login,logout
 from django.contrib.auth.models import User
+from .models import Profile
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .utils import password_checking,verify_otp,send_otp,clear_sessions_signup,clear_sessions_password_reset
@@ -55,6 +56,7 @@ def logout_view(request):
     clear_sessions_password_reset(request)
     logout(request)
     return redirect("homepage")
+
 
 def signup_view(request):
     clear_sessions_password_reset(request)
@@ -129,6 +131,7 @@ def signup_view(request):
                     email=email,
                     password=password
                 )
+                Profile.objects.create(user=user, email=email)
                 request.session.flush()
                 login(request,user)
                 return redirect("chatpage")
