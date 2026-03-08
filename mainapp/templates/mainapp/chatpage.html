@@ -10,61 +10,88 @@
 {% endblock extra_css %}
 
 {% block body %}
-
 <div class="chat-layout">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-      <div class="sidebar-header">
-        <button class="new-chat-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-          New chat
-        </button>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-header">
+      <button class="new-chat-btn">+ New Chat</button>
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div class="docs-section">
+
+      <form action="{% url 'upload_docs' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+
+        <label>Documents </label>
+        <label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ 
+          <input type="file" name="documents" multiple hidden onchange="this.form.submit()" accept=".pdf">
+        </label>
+
+      </form>
+      <div class="docs-list">
+        <div class="doc-item">research.pdf</div>
+        <div class="doc-item">notes.txt</div>
       </div>
-      <nav class="sidebar-history">
-        <div class="history-section">
-        <pre>
+
+    </div>
+
+    <!-- QUERY LOG -->
+    <div class="history-section">
+
+      <div class="section-header">
+        Query Log
+      </div>
+
+      <div class="history-list">
+        <div class="history-item">Summarize document</div>
+        <div class="history-item">Explain section 3</div>
+        <div class="history-item">Key findings</div>
+      </div>
+
+    </div>
+
+  </aside>
 
 
+  <!-- MAIN CHAT -->
+  <main class="main">
 
+    <div class="chat-messages">
+      <!-- messages will appear here -->
+    </div>
 
+    <div class="input-area">
 
+      <div class="input-container">
 
-
-
-
-
-
-
-    
-
-
-
-
-            
-        </pre>
-          
+        <div class="input-wrapper">
+          <textarea placeholder="Query your documents..."></textarea>
+          <button class="btn-primary">Send</button>
         </div>
-      </nav>
-    </aside>
-    <!-- Main -->
-    <main class="main">
-      <!-- Chat Messages -->
-      <div class="chat-messages">
-        <!-- Chat messages will be displayed here -->
-      </div>
-      <!-- Input area -->
-      <div class="input-area">
-        <div class="input-container">
-          <div class="input-wrapper">
-            <textarea class="chat-textarea" rows="1" placeholder="Query your documents…"></textarea>
-            <button class="send-btn" disabled>
-              Send
-            </button>
-          </div>
-          <div class="disclaimer">DocuMind can make mistakes. Check important info.</div>
+
+        <div class="disclaimer">
+          ⚠️ DocuMind can make mistakes. Check important info.
         </div>
+
       </div>
-    </main>
-  </div>
+
+    </div>
+
+  </main>
+
+</div>
+<!-- CSS to adjust the height of the textbox automatically -->
+<script>
+const textarea = document.querySelector("textarea");
+
+textarea.addEventListener("input", () => {
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+});
+</script>
 {% endblock %}
-
