@@ -158,10 +158,6 @@ def delete_account_view(request):
 def password_reset_view(request):
     clear_sessions_signup(request)
     
-    if request.user.is_authenticated:
-        messages.error(request,"User already logged in!")
-        return redirect("chatpage")
-    
     stage=request.session.get("reset_stage","email")
 
     if request.method=="POST":

@@ -4,3 +4,5 @@ db.sqlite3
 .env
 staticfiles/
 .vscode/
+media/documents/*
+!media/documents/.gitkeep

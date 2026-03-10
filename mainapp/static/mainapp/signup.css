@@ -9,19 +9,19 @@
 
 /* Card */
 .signup-card {
-    background: rgba(31, 41, 55, 0.65);
+    background: rgba(199, 210, 254, 0.85);
     backdrop-filter: blur(8px);
     padding: 40px;
     width: 400px;
     border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(79, 70, 229, 0.12);
+    box-shadow: 0 15px 40px rgba(79, 70, 229, 0.15);
     text-align: center;
     transition: all 0.3s ease;
 }
 
 .signup-card:hover {
-    border-color: rgba(34, 211, 238, 0.4);
+    border-color: rgba(79, 70, 229, 0.35);
 }
 
 /* Heading */
@@ -29,12 +29,12 @@
     margin-bottom: 10px;
     font-size: 24px;
     font-weight: 600;
-    color: #ffffff;
+    color: #1e293b;
 }
 
 .subtitle {
     font-size: 14px;
-    color: #9ca3af;
+    color: #64748b;
     margin-bottom: 28px;
 }
 
@@ -43,6 +43,7 @@
     text-align: left;
     margin-bottom: 20px;
 }
+
 .nav-links {
     list-style: none;
     display: flex;
@@ -51,19 +52,18 @@
 
 .nav-links a {
     text-decoration: none;
-    color: #9ca3af;
+    color: #64748b;
     font-size: 15px;
     transition: all 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: #22d3ee;
+    color: #4f46e5;
 }
-
 
 .form-group label {
     font-size: 13px;
-    color: #9ca3af;
+    color: #64748b;
     display: block;
     margin-bottom: 6px;
 }
@@ -72,29 +72,29 @@
 .form-group input {
     width: 100%;
     padding: 11px;
-    background: #0c0f14;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #f5f3ff;
+    border: 1px solid rgba(79, 70, 229, 0.15);
     border-radius: 8px;
-    color: #e5e7eb;
+    color: #1e293b;
     transition: all 0.3s ease;
 }
 
 .form-group input::placeholder {
-    color: #6b7280;
+    color: #94a3b8;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: #22d3ee;
-    box-shadow: 0 0 8px rgba(34, 211, 238, 0.3);
+    border-color: #4f46e5;
+    box-shadow: 0 0 8px rgba(79, 70, 229, 0.25);
 }
 
 /* Button */
 .signup-btn {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(135deg, #22d3ee, #06b6d4);
-    color: #0c0f14;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #f5f3ff;
     border: none;
     border-radius: 8px;
     font-weight: 600;
@@ -104,7 +104,7 @@
 
 .signup-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(34, 211, 238, 0.35);
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.35);
 }
 
 /* Message Styling */
@@ -117,12 +117,12 @@
 
 .message.error {
     background: rgba(248, 113, 113, 0.08);
-    color: #f87171;
+    color: #dc2626;
     border: 1px solid rgba(248, 113, 113, 0.2);
 }
 
 .message.success {
     background: rgba(34, 197, 94, 0.08);
-    color: #4ade80;
+    color: #16a34a;
     border: 1px solid rgba(34, 197, 94, 0.2);
 }

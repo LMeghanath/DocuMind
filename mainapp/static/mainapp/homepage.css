@@ -7,14 +7,15 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: #0c0f14;
-    color: #e5e7eb;
+    background: #eef2ff;
+    color: #1e293b;
     line-height: 1.7;
     letter-spacing: 0.3px;
 }
 
 /* ===== Container ===== */
 .container {
+    background: rgba(199, 210, 254, 0.85);
     width: 88%;
     max-width: 1200px;
     margin: auto;
@@ -22,10 +23,10 @@ body {
 
 /* ===== Navbar ===== */
 .navbar {
-    background: rgba(17, 24, 39, 0.85);
+    background: rgba(199, 210, 254, 0.85);
     backdrop-filter: blur(10px);
     padding: 22px 0;
-    border-bottom: 1px solid rgba(34, 211, 238, 0.15);
+    border-bottom: 1px solid rgba(79, 70, 229, 0.15);
 }
 
 .navbar .container {
@@ -37,8 +38,9 @@ body {
 .logo {
     font-size: 20px;
     font-weight: 600;
-    color: #22d3ee;
+    color: #4f46e5;
     letter-spacing: 1px;
+    text-decoration: none;
 }
 
 .nav-links {
@@ -49,19 +51,19 @@ body {
 
 .nav-links a {
     text-decoration: none;
-    color: #9ca3af;
+    color: #64748b;
     font-size: 15px;
     transition: all 0.3s ease;
 }
 
 .nav-links a:hover {
-    color: #22d3ee;
+    color: #4f46e5;
 }
 
 /* ===== Buttons ===== */
 .btn-primary {
-    background: linear-gradient(135deg, #22d3ee, #06b6d4);
-    color: #0c0f14;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #f5f3ff;
     padding: 12px 28px;
     border-radius: 8px;
     text-decoration: none;
@@ -71,12 +73,12 @@ body {
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(34, 211, 238, 0.35);
+    box-shadow: 0 10px 30px rgba(79, 70, 229, 0.35);
 }
 
 .btn-secondary {
-    border: 1px solid rgba(34, 211, 238, 0.4);
-    color: #22d3ee;
+    border: 1px solid rgba(79, 70, 229, 0.4);
+    color: #4f46e5;
     padding: 12px 28px;
     border-radius: 8px;
     text-decoration: none;
@@ -84,7 +86,7 @@ body {
 }
 
 .btn-secondary:hover {
-    background: rgba(34, 211, 238, 0.1);
+    background: rgba(99, 102, 241, 0.15);
     transform: translateY(-2px);
 }
 
@@ -92,7 +94,7 @@ body {
 .hero {
     padding: 150px 0;
     text-align: center;
-    background: radial-gradient(circle at top, #111827, #0c0f14 65%);
+    background:rgba(199, 210, 254, 0.85);
 }
 
 .hero h1 {
@@ -103,7 +105,7 @@ body {
 
 .hero p {
     font-size: 18px;
-    color: #9ca3af;
+    color: #64748b;
     max-width: 750px;
     margin: auto;
     margin-bottom: 45px;
@@ -118,7 +120,7 @@ body {
 /* ===== Features Section ===== */
 .features {
     padding: 110px 0;
-    background: #111827;
+    background: #e0e7ff;
 }
 
 .features h2 {
@@ -126,7 +128,7 @@ body {
     font-size: 34px;
     font-weight: 600;
     margin-bottom: 70px;
-    color: #ffffff;
+    color: #1e293b;
 }
 
 /* Grid */
@@ -138,41 +140,42 @@ body {
 
 /* Feature Card */
 .feature-card {
-    background: rgba(31, 41, 55, 0.65);
+    background: rgba(245, 243, 255, 0.65);
     backdrop-filter: blur(6px);
     padding: 38px;
     border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(79, 70, 229, 0.12);
     transition: all 0.35s ease;
 }
 
 .feature-card:hover {
     transform: translateY(-8px);
-    border-color: rgba(34, 211, 238, 0.4);
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+    border-color: rgba(79, 70, 229, 0.35);
+    box-shadow: 0 15px 45px rgba(79, 70, 229, 0.15);
 }
 
 .feature-card h3 {
     margin-bottom: 18px;
     font-size: 19px;
     font-weight: 500;
-    color: #e5e7eb;
+    color: #1e293b;
 }
 
 .feature-card p {
-    color: #9ca3af;
+    color: #64748b;
     font-size: 15px;
 }
 
 /* ===== Footer ===== */
 .footer {
-    background: #0c0f14;
+    background: rgba(199, 210, 254, 0.85);
     padding: 40px 0;
     text-align: center;
-    color: #6b7280;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    color: #64748b;
+    border-top: 1px solid rgba(79, 70, 229, 0.1);
     font-size: 14px;
 }
+
 /* Message Box */
 .message {
     margin-bottom: 20px;
@@ -186,13 +189,13 @@ body {
 /* Error */
 .message.error {
     background: rgba(248, 113, 113, 0.08);
-    color: #f87171;
+    color: #dc2626;
     border: 1px solid rgba(248, 113, 113, 0.25);
 }
 
 /* Success */
 .message.success {
     background: rgba(34, 197, 94, 0.08);
-    color: #4ade80;
+    color: #16a34a;
     border: 1px solid rgba(34, 197, 94, 0.25);
 }

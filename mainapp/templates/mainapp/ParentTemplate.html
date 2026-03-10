@@ -19,12 +19,13 @@
                 DocuMind</a> 
             </div>
             <ul class="nav-links">
-                <li><a href="/#feature-card">Features</a></li>
-                <li><a href="/#working">How It Works</a></li>
                 {% if request.user.is_authenticated %}
+                <li><a href="{% url 'chatpage' %}">Query Documents </a></li>
                 <li><a href="{% url 'profile' %}">Profile</a></li>
                 <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
+                <li><a href="/#feature-card">Features</a></li>
+                <li><a href="/#working">How It Works</a></li>
                 <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'signup' %}">Signup</a></li>
                 {% endif %}

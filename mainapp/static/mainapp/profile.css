@@ -6,18 +6,18 @@
 }
 
 .profile-card{
-    background:#1e1e1e;
+    background:#eef2ff;
     padding:40px;
     width:450px;
     border-radius:10px;
-    border:1px solid #2e2e2e;
-    box-shadow:0 6px 18px rgba(0,0,0,0.6);
+    border:1px solid rgba(79,70,229,0.15);
+    box-shadow:0 6px 18px rgba(79,70,229,0.15);
 }
 
 .profile-card h2{
     text-align:center;
     margin-bottom:30px;
-    color:#f1f1f1;
+    color:#1e293b;
 }
 
 .profile-info{
@@ -29,17 +29,17 @@
 .profile-row{
     display:flex;
     justify-content:space-between;
-    border-bottom:1px solid #333;
+    border-bottom:1px solid rgba(79,70,229,0.12);
     padding-bottom:10px;
 }
 
 .label{
     font-weight:600;
-    color:#9e9e9e;
+    color:#64748b;
 }
 
 .value{
-    color:#ffffff;
+    color:#1e293b;
 }
 
 .profile-actions{
@@ -51,8 +51,8 @@
 /* Reset password button */
 
 .reset-btn{
-    background:#3b82f6;
-    color:white;
+    background:#6366f1;
+    color:#f5f3ff;
     padding:10px 18px;
     text-decoration:none;
     border-radius:6px;
@@ -61,14 +61,14 @@
 }
 
 .reset-btn:hover{
-    background:#2563eb;
+    background:#4f46e5;
 }
 
 /* Delete account button */
 
 .delete-btn{
     background:#ef4444;
-    color:white;
+    color:#ffffff;
     padding:10px 18px;
     text-decoration:none;
     border-radius:6px;
