@@ -1,13 +1,13 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth  import authenticate ,login,logout
 from django.contrib.auth.models import User
-from .models import Profile,Document,Chat
+from .models import Profile,Document,Chat,Message
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .file_upload_utility import delete_doc,delete_all_docs
 from .utils import password_checking,verify_otp,send_otp,clear_sessions_signup,clear_sessions_password_reset
-import os 
 from django.db.models import Count
+from django.shortcuts import get_object_or_404
 
 """
 IMP
@@ -27,6 +27,7 @@ def delete_doc_view(request,id):
 @login_required
 def delete_all_docs_view(request):
     flag,message=delete_all_docs(request.user)
+    request.session.pop("user_selected_docs")
     if flag==True:
         messages.success(request,message)
     else:
@@ -45,12 +46,20 @@ def new_chat_view(request):
      
 @login_required
 def chatpage_view(request,chat_id):
-    context={}
-    docs=Document.objects.filter(user=request.user)
-    chat=Chat.objects.filter(user=request.user).order_by("-chat_time")
-    context["docs"]=docs
     clear_sessions_signup(request)
     clear_sessions_password_reset(request)
+    
+    context={}
+    user_docs=Document.objects.filter(user=request.user)
+    
+    chat = get_object_or_404(Chat, id=chat_id,user=request.user)
+    chat_messages=Message.objects.filter(chat=chat)
+    
+    chats=Chat.objects.filter(user=request.user).order_by("-chat_time")
+    context["docs"]=user_docs
+    context["chat_messages"]=chat_messages
+    context["chats"]=chats
+    context["chat"]=chat
     return render(request,"mainapp/chatpage.html",context)
 
 def login_view(request):

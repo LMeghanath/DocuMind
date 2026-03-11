@@ -14,7 +14,6 @@ def select_docs(request):
     if request.method=="POST":
         docs=request.POST.getlist("selected_docs")
         request.session["user_selected_docs"]=docs
-        print(docs)
         """
         Session will be used by MEGHANATH to adjust context of prompt.
         """
@@ -69,6 +68,7 @@ def upload_docs(request):
             # Reset pointer
             doc.seek(0)
             display_name=os.path.basename(doc.name)
+            display_name=display_name[:20]
             file_name = f"{uuid.uuid4()}.pdf"
 
             file_path = os.path.join(user_folder, file_name)
@@ -101,7 +101,6 @@ def upload_docs(request):
 
 def delete_all_docs(user):
     docs=Document.objects.filter(user=user)
-    
     if not docs.exists():
         return False,"No documents have been uploaded by user to delete."    
     else:    
@@ -128,7 +127,7 @@ def delete_all_docs(user):
                   
 def delete_doc(request,id):
         user=request.user
-        
+        request.session.pop("user_selected_docs")
         try:
             doc=Document.objects.get(user=user,id=id)
         except Document.DoesNotExist:
