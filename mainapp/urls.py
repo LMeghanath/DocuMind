@@ -15,5 +15,6 @@ urlpatterns = [
     path('delete_doc/<str:id>',file_upload_utility.delete_doc,name="delete_doc"),
     path('delete_all_docs/',views.delete_all_docs_view,name="delete_all_docs"),
     path('new_chat/',views.new_chat_view,name="new_chat"),
+    path('select_docs',file_upload_utility.select_docs,name="select_docs"),
     
 ]

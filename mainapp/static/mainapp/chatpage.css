@@ -66,6 +66,10 @@ body{
     border-radius:6px;
     font-size:13px;
     cursor:pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
     color:#1e293b;
 }
 
@@ -213,3 +217,15 @@ textarea{
     border: 1px solid rgba(34, 197, 94, 0.25);
 }
 
+
+.doc-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-links {
+    font-size: 13px;
+    color: red;
+    text-decoration: none;
+}

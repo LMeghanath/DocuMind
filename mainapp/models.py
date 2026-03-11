@@ -40,7 +40,7 @@ class Message(models.Model):
         ("system","System"),
     ]
 
-    chat=models.ForeignKey(Chat,on_delete=models.CASCADE)
+    chat=models.ForeignKey(Chat,on_delete=models.CASCADE,related_name = "messages")
     role=models.CharField(max_length=10,choices=ROLES)
     message_text=models.TextField()
     message_time=models.DateTimeField(auto_now_add=True)

@@ -7,6 +7,7 @@ from django.contrib import messages
 from .file_upload_utility import delete_doc,delete_all_docs
 from .utils import password_checking,verify_otp,send_otp,clear_sessions_signup,clear_sessions_password_reset
 import os 
+from django.db.models import Count
 
 """
 IMP
@@ -34,6 +35,10 @@ def delete_all_docs_view(request):
 
 @login_required
 def new_chat_view(request):
+    Chat.objects.filter(user=request.user)\
+        .annotate(msg_count=Count("messages"))\
+        .filter(msg_count=0)\
+        .delete()
     chat=Chat(user=request.user,)
     chat.save()
     return redirect("chatpage",chat.id)
@@ -181,6 +186,7 @@ def delete_account_view(request):
     else:
         messages.error(request,message)    
     user.delete()
+    request.session.flush()
     messages.success(request,"Account has been successfully deleted.")
     return redirect("homepage")
 

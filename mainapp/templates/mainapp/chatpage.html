@@ -32,8 +32,6 @@
 
       <form action="{% url 'upload_docs' %}" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-
-
         <label>Documents </label>
         <label>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ 
@@ -41,17 +39,23 @@
         </label>
 
       </form>
+      <a href="{% url 'delete_all_docs' %}" class="delete-links">Delete All Documents</a>  
       <div class="docs-list">
         {% if docs %}
-        <a href="{% url 'delete_all_docs' %}">Delete all</a>
+        <form action="{% url 'select_docs' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
         {% for doc in docs %}
             <label class="doc-item">
-              <input type="checkbox" name="selected_docs" value="{{ doc.id }}">
-                <span>{{ doc.display_name }}</span>&nbsp;&nbsp;&nbsp;
-              <a href="{% url 'delete_doc' doc.id %}" class="delete-links">X</a>  
+            <div class="doc-left">
+            <input type="checkbox" {% if doc.id|stringformat:"s" in request.session.user_selected_docs %}checked{% endif %} 
+            name="selected_docs" value="{{ doc.id }}" onchange="this.form.submit()">
+            <span>{{ doc.display_name }}</span>
+            </div>
+            <a href="{% url 'delete_doc' doc.id %}" class="delete-links">X</a>
             </label>
         {% endfor %}
-        {% endif %}
+        </form>
+      {% endif %}
       </div>
 
     </div>

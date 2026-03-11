@@ -8,6 +8,18 @@ from .models import Document,Profile,Chat
 import hashlib
 import shutil
 
+
+@login_required
+def select_docs(request):
+    if request.method=="POST":
+        docs=request.POST.getlist("selected_docs")
+        request.session["user_selected_docs"]=docs
+        print(docs)
+        """
+        Session will be used by MEGHANATH to adjust context of prompt.
+        """
+    return redirect(request.META.get("HTTP_REFERER"))
+    
 @login_required
 def upload_docs(request):
 
