@@ -1,11 +1,12 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth  import authenticate ,login,logout
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile,Document
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from .file_upload_utility import delete_doc,delete_all_docs
 from .utils import password_checking,verify_otp,send_otp,clear_sessions_signup,clear_sessions_password_reset
-
+import os 
 """
 IMP
 clear_sessions_signup() and clear_sessions_password_reset() - user defined function to clear residual sessions of signup_view 
@@ -17,12 +18,27 @@ def homepage(request):
     clear_sessions_password_reset(request)
     return render(request,"mainapp/homepage.html")
 
+@login_required
+def delete_doc_view(request,id):
+    return delete_doc(request,id)
 
 @login_required
+def delete_all_docs_view(request):
+    flag,message=delete_all_docs(request.user)
+    if flag==True:
+        messages.success(request,message)
+    else:
+        messages.error(request,message)    
+    return redirect("chatpage")
+    
+@login_required
 def chatpage(request):
+    context={}
+    docs=Document.objects.filter(user=request.user)
+    context["docs"]=docs
     clear_sessions_signup(request)
     clear_sessions_password_reset(request)
-    return render(request,"mainapp/chatpage.html")
+    return render(request,"mainapp/chatpage.html",context)
 
 def login_view(request):
     clear_sessions_signup(request)
@@ -151,6 +167,11 @@ def delete_account_view(request):
     clear_sessions_signup(request)
     clear_sessions_password_reset(request)
     user=request.user
+    flag,message=delete_all_docs(user)
+    if flag==True:
+        messages.success(request,message)
+    else:
+        messages.error(request,message)    
     user.delete()
     messages.success(request,"Account has been successfully deleted.")
     return redirect("homepage")

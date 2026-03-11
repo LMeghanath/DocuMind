@@ -6,6 +6,7 @@ import os
 import uuid
 from .models import Document,Profile
 import hashlib
+import shutil
 
 @login_required
 def upload_docs(request):
@@ -55,7 +56,7 @@ def upload_docs(request):
 
             # Reset pointer
             doc.seek(0)
-
+            display_name=os.path.basename(doc.name)
             file_name = f"{uuid.uuid4()}.pdf"
 
             file_path = os.path.join(user_folder, file_name)
@@ -67,6 +68,7 @@ def upload_docs(request):
             document = Document(
                 user=request.user,
                 file_name=file_name,
+                display_name=display_name,
                 file_size=doc.size,
                 chunk_count=0,
                 file=f"documents/{user_id}/{file_name}",
@@ -80,6 +82,62 @@ def upload_docs(request):
             profile.document_count += 1
             profile.total_storage += doc.size
             profile.save()
+        messages.success(request,"Uploaded Documents!")
         return redirect('chatpage')    
 
     return render(request,"mainapp/chatpage.html")        
+
+def delete_all_docs(user):
+    docs=Document.objects.filter(user=user)
+    
+    if not docs.exists():
+        return False,"No documents have been uploaded by user to delete."    
+    else:    
+        """
+            CALL ramaraju module to delete all indexes on this user.
+        """
+        size=0
+        for doc in docs:
+            if doc.file and os.path.exists(doc.file.path):
+                os.remove(doc.file.path)
+            
+            size+=doc.file_size
+            doc.delete()
+        
+        folder = os.path.join(settings.MEDIA_ROOT, "documents", str(user.id))
+        if os.path.exists(folder):
+            shutil.rmtree(folder)    
+        
+        user_profile=Profile.objects.get(user=user)
+        user_profile.document_count=0
+        user_profile.total_storage=max(0,user_profile.total_storage-size)
+        user_profile.save()
+        return True,"Deleted all files uploaded by user."    
+          
+def delete_doc(request,id):
+        user=request.user
+        
+        try:
+            doc=Document.objects.get(user=user,id=id)
+        except Document.DoesNotExist:
+            messages.error(request,"File not exists!")
+            return redirect('chatpage')
+         
+        name=doc.display_name
+        
+        """
+        CALL ramaraju module to reperform indexing on this user.
+        """
+        
+        if os.path.exists(doc.file.path):
+            os.remove(doc.file.path)
+        
+        size=doc.file_size
+        doc.delete()
+        user_profile=Profile.objects.get(user=user)
+        user_profile.document_count-=1
+        user_profile.total_storage=max(0,user_profile.total_storage-size)
+        user_profile.save()
+        messages.success(request,f"Deleted {name} file. ")
+        return redirect('chatpage')
+        

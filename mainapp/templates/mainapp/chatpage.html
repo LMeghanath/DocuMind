@@ -42,8 +42,16 @@
 
       </form>
       <div class="docs-list">
-        <div class="doc-item">research.pdf</div>
-        <div class="doc-item">notes.txt</div>
+        {% if docs %}
+        <a href="{% url 'delete_all_docs' %}">Delete all</a>
+        {% for doc in docs %}
+            <label class="doc-item">
+              <input type="checkbox" name="selected_docs" value="{{ doc.id }}">
+                <span>{{ doc.display_name }}</span> 
+              <a href="{% url 'delete_doc' doc.id %}">Delete</a>  
+            </label>
+        {% endfor %}
+        {% endif %}
       </div>
 
     </div>

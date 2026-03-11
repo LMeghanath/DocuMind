@@ -15,7 +15,8 @@ class Profile(models.Model):
 
 class Document(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
-    file_name=models.CharField(max_length=255)
+    file_name=models.CharField(max_length=255) #internal unique name 
+    display_name=models.CharField(max_length=50,default="User Doc") #display name for user
     file=models.FileField(upload_to='user_documents/',
                           validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
     file_size=models.IntegerField()

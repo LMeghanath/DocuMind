@@ -12,4 +12,7 @@ urlpatterns = [
     path('delete_account/',views.delete_account_view,name='delete_account'),
     path('password_reset/',views.password_reset_view,name='password_reset'),
     path('upload_docs/',file_upload_utility.upload_docs,name="upload_docs"),
+    path('delete_doc/<str:id>',file_upload_utility.delete_doc,name="delete_doc"),
+    path('delete_all_docs/',views.delete_all_docs_view,name="delete_all_docs"),
+    
 ]
