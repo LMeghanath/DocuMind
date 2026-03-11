@@ -24,7 +24,7 @@
   <aside class="sidebar">
 
     <div class="sidebar-header">
-      <button class="new-chat-btn">+ New Chat</button>
+      <a class="new-chat-btn" href="{% url 'new_chat' %}"> New Chat</a>
     </div>
 
     <!-- DOCUMENTS -->
@@ -47,8 +47,8 @@
         {% for doc in docs %}
             <label class="doc-item">
               <input type="checkbox" name="selected_docs" value="{{ doc.id }}">
-                <span>{{ doc.display_name }}</span> 
-              <a href="{% url 'delete_doc' doc.id %}">Delete</a>  
+                <span>{{ doc.display_name }}</span>&nbsp;&nbsp;&nbsp;
+              <a href="{% url 'delete_doc' doc.id %}" class="delete-links">X</a>  
             </label>
         {% endfor %}
         {% endif %}
@@ -60,13 +60,13 @@
     <div class="history-section">
 
       <div class="section-header">
-        Query Log
+        Chat History
       </div>
 
       <div class="history-list">
-        <div class="history-item">Summarize document</div>
-        <div class="history-item">Explain section 3</div>
-        <div class="history-item">Key findings</div>
+        {% for chat in chats %}
+        <div class="history-item"><a href="{% url 'chatpage' chat.id  %}">{{ chat.chat_title }}</a></div>
+        {% endfor %}
       </div>
 
     </div>

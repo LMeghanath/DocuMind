@@ -1,12 +1,13 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth  import authenticate ,login,logout
 from django.contrib.auth.models import User
-from .models import Profile,Document
+from .models import Profile,Document,Chat
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .file_upload_utility import delete_doc,delete_all_docs
 from .utils import password_checking,verify_otp,send_otp,clear_sessions_signup,clear_sessions_password_reset
 import os 
+
 """
 IMP
 clear_sessions_signup() and clear_sessions_password_reset() - user defined function to clear residual sessions of signup_view 
@@ -29,12 +30,19 @@ def delete_all_docs_view(request):
         messages.success(request,message)
     else:
         messages.error(request,message)    
-    return redirect("chatpage")
-    
+    return redirect(request.META.get("HTTP_REFERER"))
+
 @login_required
-def chatpage(request):
+def new_chat_view(request):
+    chat=Chat(user=request.user,)
+    chat.save()
+    return redirect("chatpage",chat.id)
+     
+@login_required
+def chatpage_view(request,chat_id):
     context={}
     docs=Document.objects.filter(user=request.user)
+    chat=Chat.objects.filter(user=request.user).order_by("-chat_time")
     context["docs"]=docs
     clear_sessions_signup(request)
     clear_sessions_password_reset(request)
@@ -45,7 +53,7 @@ def login_view(request):
     clear_sessions_password_reset(request)
     if request.user.is_authenticated==True:
         messages.error(request,"User already logged in.")
-        return redirect("chatpage")
+        return redirect(request.META.get("HTTP_REFERER"))
 
     if request.method=="POST":
         email=request.POST.get("email","").strip().lower()
@@ -59,7 +67,7 @@ def login_view(request):
 
         if user!=None:
             login(request,user)
-            return redirect("chatpage")
+            return redirect("new_chat")
         else:
             messages.error(request,"Invalid credentials!")
             return redirect("login")
@@ -79,7 +87,7 @@ def signup_view(request):
     
     if request.user.is_authenticated==True:
         messages.error(request,"User already logged in.")
-        return redirect("chatpage")
+        return redirect(request.META.get("HTTP_REFERER"))
 
     stage=request.session.get("signup_stage","email")
 
@@ -150,7 +158,7 @@ def signup_view(request):
                 Profile.objects.create(user=user, email=email)
                 request.session.flush()
                 login(request,user)
-                return redirect("chatpage")
+                return redirect("new_chat")
             else:
                 return redirect("signup")
     

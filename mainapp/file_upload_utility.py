@@ -4,7 +4,7 @@ from django.conf  import settings
 from django.contrib.auth.decorators import login_required
 import os 
 import uuid
-from .models import Document,Profile
+from .models import Document,Profile,Chat
 import hashlib
 import shutil
 
@@ -30,12 +30,12 @@ def upload_docs(request):
             # extension validation
             if not doc.name.lower().endswith(".pdf"):
                 messages.error(request, "Please upload PDF files only!")
-                return redirect("chatpage")
+                return redirect(request.META.get("HTTP_REFERER"))
 
             # MIME validation
             if doc.content_type != "application/pdf":
                 messages.error(request, "Invalid file type. Please upload PDF files only!")
-                return redirect("chatpage")
+                return redirect(request.META.get("HTTP_REFERER"))
 
             """
             Run RAMARAJU module checker here
@@ -83,9 +83,9 @@ def upload_docs(request):
             profile.total_storage += doc.size
             profile.save()
         messages.success(request,"Uploaded Documents!")
-        return redirect('chatpage')    
+        return redirect(request.META.get("HTTP_REFERER")) 
 
-    return render(request,"mainapp/chatpage.html")        
+    return redirect(request.META.get("HTTP_REFERER"))        
 
 def delete_all_docs(user):
     docs=Document.objects.filter(user=user)
@@ -113,7 +113,7 @@ def delete_all_docs(user):
         user_profile.total_storage=max(0,user_profile.total_storage-size)
         user_profile.save()
         return True,"Deleted all files uploaded by user."    
-          
+                  
 def delete_doc(request,id):
         user=request.user
         
@@ -121,7 +121,7 @@ def delete_doc(request,id):
             doc=Document.objects.get(user=user,id=id)
         except Document.DoesNotExist:
             messages.error(request,"File not exists!")
-            return redirect('chatpage')
+            return redirect(request.META.get("HTTP_REFERER"))
          
         name=doc.display_name
         
@@ -139,5 +139,5 @@ def delete_doc(request,id):
         user_profile.total_storage=max(0,user_profile.total_storage-size)
         user_profile.save()
         messages.success(request,f"Deleted {name} file. ")
-        return redirect('chatpage')
+        return redirect(request.META.get("HTTP_REFERER"))
         
