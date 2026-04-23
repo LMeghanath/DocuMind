@@ -1,0 +1,5 @@
+/**
+ * Ensures that media and docs folders are tracked in version control.
+ * This utility initializes or configures tracking for media and documentation
+ * directories to maintain consistency across the repository.
+ */
