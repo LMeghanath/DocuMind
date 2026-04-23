@@ -3,91 +3,86 @@ import logging
 from langchain_community.vectorstores import FAISS
 from django.conf import settings
 from .embeddings import get_embeddings_model
-from .metadata_handler import add_chunks_to_metadata, save_user_metadata, get_user_metadata_path
+from .metadata_handler import add_chunks_to_metadata, save_doc_metadata, get_faiss_store_dir
 
 logger = logging.getLogger(__name__)
 
-def get_faiss_index_path(user_id):
-    """Returns path for FAISS index."""
-    user_dir = os.path.join(settings.BASE_DIR, 'vector_store', str(user_id))
-    os.makedirs(user_dir, exist_ok=True)
-    return os.path.join(user_dir, 'index.bin')
-
-def get_faiss_store_path(user_id):
-    """Returns the dir containing the FAISS index files for saving/loading."""
-    user_dir = os.path.join(settings.BASE_DIR, 'vector_store', str(user_id))
-    os.makedirs(user_dir, exist_ok=True)
-    return user_dir
-
-def load_or_create_faiss(user_id):
+def load_or_create_faiss(user_id, doc_id):
     """
-    Loads existing FAISS index for user, or creates a new empty one 
-    if it doesn't exist yet. We return None if creating empty so we can 
-    initialize it with the first batch of documents.
+    Loads existing FAISS index for a specific document, or creates a new empty one 
+    if it doesn't exist yet. Returns None if creating empty.
     """
-    store_path = get_faiss_store_path(user_id)
+    store_dir = get_faiss_store_dir(user_id)
     embeddings = get_embeddings_model()
     
-    # LangChain FAISS save_local creates index.faiss and index.pkl
-    # We will use this built in functionality and store them in the user's directory.
-    if os.path.exists(os.path.join(store_path, "index.faiss")):
+    # LangChain FAISS save_local creates {index_name}.faiss and {index_name}.pkl
+    # We will use doc_id as the index_name.
+    index_name = str(doc_id)
+    
+    if os.path.exists(os.path.join(store_dir, f"{index_name}.faiss")):
         try:
-            return FAISS.load_local(store_path, embeddings, allow_dangerous_deserialization=True)
+            return FAISS.load_local(store_dir, embeddings, index_name=index_name, allow_dangerous_deserialization=True)
         except Exception as e:
-            logger.error(f"Error loading FAISS index for user {user_id}: {str(e)}")
+            logger.error(f"Error loading FAISS index for doc {doc_id}: {str(e)}")
             return None
     return None
 
-def save_faiss_and_metadata_atomically(user_id, vector_store, custom_metadata_dict):
+def save_faiss_and_metadata_atomically(user_id, doc_id, vector_store, custom_metadata_dict):
     """
-    Saves both the FAISS index and the JSON metadata to disk sequentially.
-    Since we are constrained to simple academic architecture, we try-catch to 
-    ensure both succeed or we log an error. true 'atomic' operations on separate files 
-    require OS level transaction or staging files, which is too complex here.
+    Saves both the FAISS index and the JSON metadata to disk for a specific document.
     """
-    store_path = get_faiss_store_path(user_id)
+    store_dir = get_faiss_store_dir(user_id)
+    index_name = str(doc_id)
     try:
-        # Save FAISS
-        vector_store.save_local(store_path)
+        # Save FAISS -> creates {doc_id}.faiss and {doc_id}.pkl
+        vector_store.save_local(store_dir, index_name=index_name)
         
-        # Save JSON metadata explicitly as requested
-        save_success = save_user_metadata(user_id, custom_metadata_dict)
+        # Save JSON metadata explicitly as requested -> {doc_id}_meta.json
+        save_success = save_doc_metadata(user_id, doc_id, custom_metadata_dict)
         if not save_success:
             raise Exception("Failed to save JSON metadata.")
             
         return True
     except Exception as e:
-        logger.error(f"Atomic save failed for user {user_id}: {str(e)}")
-        return False
+        logger.error(f"Atomic save failed for doc {doc_id}: {str(e)}")
+        # Rollback FAISS files to maintain atomic constraints
+        for ext in ['.faiss', '.pkl']:
+            fpath = os.path.join(store_dir, f"{doc_id}{ext}")
+            if os.path.exists(fpath):
+                try:
+                    os.remove(fpath)
+                except:
+                    pass
+        raise e
 
-def add_documents_to_store(user_id, chunks):
+def add_documents_to_store(user_id, doc_id, chunks):
     """
     Takes text chunks, embeds them, adds to FAISS, builds metadata JSON,
-    and calls atomic save.
+    and calls atomic save. Now done per-document.
     """
     try:
         embeddings = get_embeddings_model()
-        vector_store = load_or_create_faiss(user_id)
+        vector_store = load_or_create_faiss(user_id, doc_id)
         
         start_index = 0
         
         if vector_store is None:
-            # First time creating store for this user
+            # First time creating store for this document
             vector_store = FAISS.from_documents(chunks, embeddings)
         else:
             # Get current size to continue IDs
             start_index = vector_store.index.ntotal
             vector_store.add_documents(chunks)
             
-        # Update our specific JSON metadata format as requested
-        updated_metadata = add_chunks_to_metadata(user_id, chunks, start_index)
+        # Update our specific JSON metadata format per document
+        updated_metadata = add_chunks_to_metadata(user_id, doc_id, chunks, start_index)
         
         # Atomically save FAISS and Metadata
-        save_success = save_faiss_and_metadata_atomically(user_id, vector_store, updated_metadata)
+        save_success = save_faiss_and_metadata_atomically(user_id, doc_id, vector_store, updated_metadata)
         if not save_success:
             raise Exception("Failed to save to vector store.")
             
         return True
     except Exception as e:
-        logger.error(f"Error adding documents to store for user {user_id}: {str(e)}")
+        logger.error(f"Error adding documents to store for doc {doc_id}: {str(e)}")
         raise e

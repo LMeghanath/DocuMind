@@ -15,9 +15,8 @@ def preprocess_text(text):
         # 1. Lowercasing
         text = text.lower()
 
-        # 2. Remove special characters (keep alphanumeric and basic punctuation)
-        # We'll allow letters, numbers, spaces, periods, commas, question marks, and hyphens
-        text = re.sub(r'[^a-z0-9\s.,?-]', '', text)
+        # 2. Less aggressive cleaning - keep alphanumeric, basic punctuation, emails, and slash
+        text = re.sub(r'[^\w\s.,@:/-]', '', text)
 
         # 3. Remove extra spaces and newlines
         text = re.sub(r'\s+', ' ', text)

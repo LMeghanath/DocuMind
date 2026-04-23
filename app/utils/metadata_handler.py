@@ -5,61 +5,69 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
-def get_user_metadata_path(user_id):
-    """Returns the path to the user's single metadata file."""
-    # Assuming vector_store/user_id/ dir structure will be created here too or in faiss_store
-    user_dir = os.path.join(settings.BASE_DIR, 'vector_store', str(user_id))
+def get_faiss_store_dir(user_id):
+    """Returns the dir containing the FAISS index files for a user."""
+    user_dir = os.path.join(settings.MEDIA_ROOT, 'indexes', str(user_id))
     os.makedirs(user_dir, exist_ok=True)
-    return os.path.join(user_dir, 'metadata.json')
+    return user_dir
 
-def load_user_metadata(user_id):
-    """Loads existing metadata for a user."""
-    path = get_user_metadata_path(user_id)
+def get_doc_metadata_path(user_id, doc_id):
+    """Returns the path to a specific document's metadata file."""
+    user_dir = get_faiss_store_dir(user_id)
+    return os.path.join(user_dir, f'{doc_id}_meta.json')
+
+def load_doc_metadata(user_id, doc_id):
+    """Loads existing metadata for a document securely."""
+    path = get_doc_metadata_path(user_id, doc_id)
     if os.path.exists(path):
         try:
             with open(path, 'r', encoding='utf-8') as f:
-                return json.load(f)
+                data = json.load(f)
+                return data if data else {}
         except Exception as e:
-            logger.error(f"Error loading metadata for user {user_id}: {str(e)}")
+            logger.error(f"Error loading metadata for user {user_id}, doc {doc_id}: {str(e)}")
             return {}
     return {}
 
-def save_user_metadata(user_id, metadata_dict):
-    """Saves the comprehensive metadata dictionary to a JSON file."""
-    path = get_user_metadata_path(user_id)
+def save_doc_metadata(user_id, doc_id, metadata_dict):
+    """Saves the comprehensive metadata dictionary to a JSON file truly atomically."""
+    path = get_doc_metadata_path(user_id, doc_id)
+    temp_path = path + ".tmp"
     try:
-        # Atomic save is technically harder with pure JSON in python without a temp file approach, 
-        # but for academic level we'll use a direct write. 
-        # (Module 6 asks for FAISS + JSON atomic save, handled there).
-        with open(path, 'w', encoding='utf-8') as f:
+        with open(temp_path, 'w', encoding='utf-8') as f:
             json.dump(metadata_dict, f, indent=4)
+            
+        # os.replace provides atomic swap on POSIX and Windows
+        os.replace(temp_path, path)
         return True
     except Exception as e:
-        logger.error(f"Error saving metadata for user {user_id}: {str(e)}")
+        logger.error(f"Error saving metadata for user {user_id}, doc {doc_id}: {str(e)}")
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
         return False
         
-def add_chunks_to_metadata(user_id, chunks, start_index=0):
+def add_chunks_to_metadata(user_id, doc_id, chunks, start_index=0):
     """
-    Appends new chunks to the user's metadata JSON.
+    Creates/Appends chunks to the document's metadata JSON.
     Each chunk gets an integer ID corresponding to its index in the FAISS store.
     chunks: list of LangChain Document objects
     """
     try:
-        metadata = load_user_metadata(user_id)
+        metadata = load_doc_metadata(user_id, doc_id)
+        metadata = metadata or {}  # Extra safety against overwrite bug
         current_index = start_index
 
         for chunk in chunks:
-            # We store chunk_id, document_name, text as requested
+            # We store chunk_id, document_name, text and page specifically
             metadata[str(current_index)] = {
                 "chunk_id": current_index,
                 "document_name": chunk.metadata.get("source", "Unknown Document"),
+                "page": chunk.metadata.get("page", 0),
                 "text": chunk.page_content
             }
             current_index += 1
 
-        # We don't save here immediately if we need atomic save with FAISS in Module 6. 
-        # We will return the updated metadata dict instead.
         return metadata
     except Exception as e:
-        logger.error(f"Error structuring metadata for user {user_id}: {str(e)}")
+        logger.error(f"Error structuring metadata for doc {doc_id}: {str(e)}")
         raise e

@@ -25,15 +25,16 @@ def extract_and_chunk_file(file_path):
             raise ValueError(f"Unsupported file format for extraction: {ext}")
 
         # Preprocess text content 
-        for doc in documents:
+        for i, doc in enumerate(documents):
             doc.page_content = preprocess_text(doc.page_content)
             # Add simple source name to metadata without full path
             doc.metadata["source"] = os.path.basename(file_path)
+            doc.metadata["page"] = i + 1
 
-        # Basic chunking (Student level, 500 token length approximation, overlapping slightly)
+        # Better chunking size (800 token length approximation, overlapping 100)
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=2000, # Approx 500 tokens
-            chunk_overlap=200,
+            chunk_size=800,
+            chunk_overlap=100,
             length_function=len,
             add_start_index=True,
         )

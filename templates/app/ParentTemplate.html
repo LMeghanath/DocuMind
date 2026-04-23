@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}DocuMind-Docs to Knowledge{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'app/homepage.css' %}">
+    <link rel="icon" href="{% static 'app/favicon.png' %}">
+    {% block extra_css %}{% endblock extra_css %}
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="/" class="logo">
+                <img src="{% static 'app/favicon.png'%}" alt="DocuMind logo" style="width:100px;height:50px;vertical-align:middle;margin-right:8px;">
+                DocuMind</a> 
+            </div>
+            <ul class="nav-links">
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'new_chat' %}">Query Documents </a></li>
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="/#feature-card">Features</a></li>
+                <li><a href="/#working">How It Works</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Signup</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    {% block body %}
+    {% endblock %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 DocuMind. AI-powered Retrieval-Augmented Generation Platform.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

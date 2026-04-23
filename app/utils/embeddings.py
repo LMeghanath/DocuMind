@@ -1,19 +1,21 @@
 import os
 import logging
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
+_embedding_model = None
+
 # Single instance of embeddings model for the app to reuse
 def get_embeddings_model():
-    """Returns the text embedding model instance from Google."""
+    """Returns the text embedding model instance using HuggingFace."""
+    global _embedding_model
     try:
-        # Academic setup - expects GOOGLE_API_KEY in .env or environment
-        return GoogleGenerativeAIEmbeddings(
-            model="models/embedding-001",
-            google_api_key=os.getenv("GOOGLE_API_KEY")
-        )
+        # We use a fast, local sentence-transformer model
+        if _embedding_model is None:
+            _embedding_model = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+        return _embedding_model
     except Exception as e:
         logger.error(f"Error initializing embeddings model: {str(e)}")
         raise e
