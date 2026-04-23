@@ -1,0 +1,67 @@
+{% extends 'app/ParentTemplate.html' %}
+{% load static %}
+
+{% block title %}
+DocuMind - User Profile
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'app/profile.css' %}">
+{% endblock extra_css %}
+
+{% block body %}
+
+<div class="profile-container">
+
+    <div class="profile-card">
+
+        <h2>User Profile</h2>
+
+        <div class="profile-info">
+
+            <div class="profile-row">
+                <span class="label">Username</span>
+                <span class="value">{{ request.user.username }}</span>
+            </div>
+
+            <div class="profile-row">
+                <span class="label">Email</span>
+                <span class="value">{{ request.user.email }}</span>
+            </div>
+
+            <div class="profile-row">
+                <span class="label">Documents Uploaded</span>
+                <span class="value">{{ request.user.profile.document_count|default:0 }}</span>
+            </div>
+
+            <div class="profile-row">
+                <span class="label">Total Storage Used</span>
+                <span class="value">{{ request.user.profile.total_storage|filesizeformat }}</span>
+            </div>
+
+            <div class="profile-row">
+                <span class="label">Joined On</span>
+                <span class="value">{{ request.user.date_joined }}</span>
+            </div>
+
+        </div>
+
+        <div class="profile-actions">
+
+            <a class="reset-btn" href="{% url 'password_reset' %}">
+                Reset Password
+            </a>
+
+            <a class="delete-btn" href="{% url 'delete_account' %}">
+                Delete Account
+            </a>
+
+        </div>
+
+    </div>
+</div>
+<pre>
+
+</pre>
+
+{% endblock %}

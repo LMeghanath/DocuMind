@@ -1,0 +1,127 @@
+{% extends 'app/ParentTemplate.html' %}
+{% load static %}
+
+{% block title %}
+    DocuMind-Chat
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'app/chatpage.css' %}">
+{% endblock extra_css %}
+
+{% block body %}
+    {% if messages %}
+      {% for message in messages %}
+                <div class="django-message {{ message.tags }}">
+                    {{ message }}
+                </div>
+      {% endfor %}
+    {% endif %}
+ 
+<div class="chat-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-header">
+      <a class="new-chat-btn" href="{% url 'new_chat' %}"> New Chat</a>
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div class="docs-section">
+
+      <form action="{% url 'upload_docs' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label>Documents </label>
+        <label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ 
+          <input type="file" name="documents" multiple hidden onchange="this.form.submit()" accept=".pdf">
+        </label>
+
+      </form>
+      
+      <div class="docs-list">
+        {% if docs %}
+        <label class="display_prompt">Select docs to answer query from:</label>
+        <form action="{% url 'select_docs' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for doc in docs %}
+            <label class="doc-item">
+            <div class="doc-left">
+            <input type="checkbox" {% if  request.session.user_selected_docs and doc.id|stringformat:"s" in request.session.user_selected_docs %}checked{% endif %} 
+            name="selected_docs" value="{{ doc.id }}" onchange="this.form.submit()">
+            <span>{{ doc.display_name }}</span>
+            </div>
+            <a href="{% url 'delete_doc' doc.id %}" class="delete-links">X</a>
+            </label>
+            
+        {% endfor %}
+        </form>
+        <a href="{% url 'delete_all_docs' %}" class="delete-links">Delete All Documents</a>  
+      {% endif %}
+      </div>
+
+    </div>
+
+    <!-- QUERY LOG -->
+    <div class="history-section">
+
+      <div class="section-header">
+        Chat History
+      </div>
+
+      <div class="history-list">
+        {% for chat in chats %}
+        <a href="{% url 'chatpage' chat.id  %}" class="history-item"><div class="history-item">{{ chat.chat_title }}</div></a>
+        {% endfor %}
+      </div>
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN CHAT -->
+  <main class="main">
+    <div class="chat-messages">
+      {% if chat_messages %}
+        {% for chat_msg in chat_messages %}
+
+          <div class="message {% if chat_msg.role == 'user' %}user-message{% else %}ai-message{% endif %}">
+            <div class="message-bubble">
+              {{ chat_msg.message_text }}
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div class="input-area">
+
+      <div class="input-container">
+        <form action="{% url 'query_processing' chat.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="input-wrapper">
+          <textarea name="query_holder" placeholder="Query your documents..." required ></textarea>
+          <button class="btn-primary">Send</button>
+        </div>
+      </form>        
+        <div class="disclaimer">
+          ⚠️ DocuMind can make mistakes. Check important info.
+        </div>
+
+      </div>
+
+    </div>
+    
+  </main>
+
+</div>
+<!-- CSS to adjust the height of the textbox automatically -->
+<script>
+const textarea = document.querySelector("textarea");
+
+textarea.addEventListener("input", () => {
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+});
+</script>
+{% endblock %}

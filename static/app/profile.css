@@ -1,0 +1,81 @@
+.profile-container{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    margin-top:60px;
+}
+
+.profile-card{
+    background:#eef2ff;
+    padding:40px;
+    width:450px;
+    border-radius:10px;
+    border:1px solid rgba(79,70,229,0.15);
+    box-shadow:0 6px 18px rgba(79,70,229,0.15);
+}
+
+.profile-card h2{
+    text-align:center;
+    margin-bottom:30px;
+    color:#1e293b;
+}
+
+.profile-info{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.profile-row{
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid rgba(79,70,229,0.12);
+    padding-bottom:10px;
+}
+
+.label{
+    font-weight:600;
+    color:#64748b;
+}
+
+.value{
+    color:#1e293b;
+}
+
+.profile-actions{
+    margin-top:35px;
+    display:flex;
+    justify-content:space-between;
+}
+
+/* Reset password button */
+
+.reset-btn{
+    background:#6366f1;
+    color:#f5f3ff;
+    padding:10px 18px;
+    text-decoration:none;
+    border-radius:6px;
+    font-weight:500;
+    transition:0.2s ease;
+}
+
+.reset-btn:hover{
+    background:#4f46e5;
+}
+
+/* Delete account button */
+
+.delete-btn{
+    background:#ef4444;
+    color:#ffffff;
+    padding:10px 18px;
+    text-decoration:none;
+    border-radius:6px;
+    font-weight:500;
+    transition:0.2s ease;
+}
+
+.delete-btn:hover{
+    background:#dc2626;
+}
