@@ -31,29 +31,33 @@ def user_query_processing(request, chat_id):
 
         from .utils.faiss_store import load_or_create_faiss
         
-        # Build context from FAISS
-        context_snippets = []
+        # Build context from FAISS using scored retrieval with threshold
+        SIMILARITY_THRESHOLD = 0.8  # lower score = more similar in FAISS L2 distance
+        context_parts = []
         for doc_id_str in user_selected_docs:
             try:
                 vector_store = load_or_create_faiss(request.user.id, int(doc_id_str))
                 if vector_store:
-                    results = vector_store.similarity_search(message, k=2)
-                    for res in results:
-                        context_snippets.append(res.page_content)
+                    results = vector_store.similarity_search_with_score(message, k=4)
+                    for doc, score in results:
+                        if score <= SIMILARITY_THRESHOLD:
+                            # Label each chunk with its source filename for citation
+                            source = doc.metadata.get("source", "Unknown Document")
+                            context_parts.append(
+                                f"SOURCE: {source}\nCONTENT: {doc.page_content}"
+                            )
             except Exception as e:
                 pass
-                
-        context = "\n".join(context_snippets)
 
-        # Retrieve context...
-        if context:
-            try:
-                from .utils.llm_integration import generate_response
-                ai_response = generate_response(query=message, context=context)
-            except Exception as e:
-                ai_response = f"Failed to call LLM: {str(e)}"
-        else:
-            ai_response = f"I've received your query: {message}. No relevant context could be extracted from the selected documents."
+        # Join chunks with a clear separator, or signal nothing was found
+        context = "\n\n---\n\n".join(context_parts) if context_parts else "Not in documents"
+
+        # Generate response — hallucination guardrail lives inside generate_response
+        try:
+            from .utils.llm_integration import generate_response
+            ai_response = generate_response(query=message, context=context)
+        except Exception as e:
+            ai_response = f"Failed to call LLM: {str(e)}"
 
         Message.objects.create(
             chat=chat,
