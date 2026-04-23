@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 def get_llm():
     """Returns the Gemini LLM instance via LangChain."""
     return ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",  # Use 'gemini-2.5-flash-lite' if you hit quota
+        model="gemini-2.5-flash",  # Use 'gemini-2.5-flash-lite' if you hit quota
         google_api_key=os.getenv("GOOGLE_API_KEY"),
         temperature=0.3,  # Low temperature ensures academic accuracy
     )
