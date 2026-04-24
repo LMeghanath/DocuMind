@@ -1,10 +1,9 @@
 Django
-frontend
-langchain-community
-langchain-text-splitters
-pypdf
-faiss-cpu
 fitz
-PyMuPDF
-langchain-huggingface 
-sentence-transformers
+langchain_community
+langchain_core
+langchain_google_genai
+langchain_huggingface
+langchain_text_splitters
+python-dotenv
+frontend

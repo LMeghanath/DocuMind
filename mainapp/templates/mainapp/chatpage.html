@@ -103,11 +103,13 @@
           <textarea name="query_holder" placeholder="Query your documents..." required ></textarea>
           <button class="btn-primary">Send</button>
         </div>
+        
       </form>        
+        <pre>
+        </pre>
         <div class="disclaimer">
           ⚠️ DocuMind can make mistakes. Check important info.
         </div>
-
       </div>
 
     </div>
@@ -122,6 +124,14 @@ const textarea = document.querySelector("textarea");
 textarea.addEventListener("input", () => {
     textarea.style.height = "auto";
     textarea.style.height = textarea.scrollHeight + "px";
+});
+
+// Scroll to the bottom of chat messages on page load
+window.addEventListener('load', function() {
+    const chatMessages = document.querySelector('.chat-messages');
+    if (chatMessages) {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 });
 </script>
 {% endblock %}
