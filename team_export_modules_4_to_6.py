@@ -1,6 +1,6 @@
 """
 ================================================================================
-TEAM EXPORT: ContextIQ Modules 4, 5, and 6 (Production Ready)
+TEAM EXPORT:  Modules 4, 5, and 6 (Production Ready)
 ================================================================================
 This file contains the complete logic for:
 - MODULE 3.5: Validation (Memory Safety, File Hash, Integrity)
