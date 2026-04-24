@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from .models import Chat, Message
 from django.shortcuts import get_object_or_404
-# If you have an LLM or rag logic it goes here
+
 
 def user_query_processing(request, chat_id):
     if request.method == "POST":

@@ -6,6 +6,8 @@ Deleting account
 Password reset
 Login 
 Signup
+New chat
+Delete docs
 
 """
 
