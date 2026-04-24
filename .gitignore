@@ -13,3 +13,5 @@ staticfiles/
 Workflow_Project_plan.docx
 media/documents/*
 !media/documents/.gitkeep
+media/indexes/*
+!media/indexes/.gitkeep
