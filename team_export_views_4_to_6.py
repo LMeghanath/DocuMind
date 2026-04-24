@@ -14,9 +14,9 @@ the utility logic we provided in `team_export_modules_4_to_6.py`.
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Document
-from .forms import DocumentUploadForm
-
+from mainapp.models import Document
+from app.forms import DocumentUploadForm
+from team_export_modules_4_to_6 import extract_and_chunk_file , add_documents_to_store
 # Import the consolidated utilities from the team export file
 # (Replace these imports with wherever your team places the functions)
 # from .utils.chunking import extract_and_chunk_file
