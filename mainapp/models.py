@@ -1,6 +1,9 @@
+import logging
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import FileExtensionValidator
+
+
+logger = logging.getLogger(__name__)
 
 class Profile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
@@ -14,17 +17,42 @@ class Profile(models.Model):
         return f"{self.user.username} Profile" 
 
 class Document(models.Model):
-    user=models.ForeignKey(User,on_delete=models.CASCADE)
-    file_name=models.CharField(max_length=255) #internal unique name 
-    display_name=models.CharField(max_length=50,default="User Doc") #display name for user
-    file=models.FileField(upload_to='user_documents/',
-                          validators=[FileExtensionValidator(allowed_extensions=["pdf"])])
-    file_size=models.IntegerField()
-    chunk_count=models.IntegerField()
-    file_hash=models.CharField(max_length=64)
-    upload_time=models.DateTimeField(auto_now_add=True)
-    class Meta:
-        unique_together=("user","file_hash")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='documents')
+    display_name = models.CharField(max_length=50, default="User Doc")
+    file_name = models.CharField(max_length=255, null=True, blank=True)
+    file_size = models.IntegerField(default=0)
+    chunk_count = models.IntegerField(default=0)
+    file = models.FileField(upload_to='documents/')
+    file_hash = models.CharField(max_length=256, blank=True, null=True, db_index=True)
+    is_processed = models.BooleanField(default=False)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    metadata_file_path = models.CharField(max_length=500, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        try:
+            super().save(*args, **kwargs)
+        except Exception as e:
+            logger.error(f"Error saving Document for user {self.user.username}: {str(e)}")
+            raise e
+
+    def __str__(self):
+        return f"{self.display_name} (User: {self.user.username})"
+
+class QueryLog(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='query_logs')
+    query_text = models.TextField()
+    response = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        try:
+            super().save(*args, **kwargs)
+        except Exception as e:
+            logger.error(f"Error saving QueryLog for user {self.user.username}: {str(e)}")
+            raise e
+
+    def __str__(self):
+        return f"Query by {self.user.username} at {self.timestamp}"
 
 class Chat(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
@@ -52,5 +80,4 @@ class Chunk(models.Model):
     faiss_index=models.IntegerField(unique=True)
     page_number=models.IntegerField()
     class Meta:
-        unique_together=("document","chunk_index")  
-
+        unique_together=("document","chunk_index")

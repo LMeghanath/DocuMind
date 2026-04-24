@@ -18,7 +18,4 @@ urlpatterns = [
     path('new_chat/',views.new_chat_view,name="new_chat"),
     path('select_docs/',file_upload_utility.select_docs,name="select_docs"),
     path('user_query_processing/<int:chat_id>',query_processing.user_query_processing,name="query_processing"),
-    
-    
-    
 ]

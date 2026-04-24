@@ -5,15 +5,17 @@ from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
-def get_faiss_store_dir(user_id):
-    """Returns the dir containing the FAISS index files for a user."""
-    user_dir = os.path.join(settings.MEDIA_ROOT, 'indexes', str(user_id))
+def get_faiss_store_dir(user_id, doc_id=None):
+    """Returns the dir containing the FAISS index files for a user or a specific document."""
+    user_dir = os.path.join(settings.INDEX_ROOT, str(user_id))
+    if doc_id is not None:
+        user_dir = os.path.join(user_dir, str(doc_id))
     os.makedirs(user_dir, exist_ok=True)
     return user_dir
 
 def get_doc_metadata_path(user_id, doc_id):
     """Returns the path to a specific document's metadata file."""
-    user_dir = get_faiss_store_dir(user_id)
+    user_dir = get_faiss_store_dir(user_id, doc_id)
     return os.path.join(user_dir, f'{doc_id}_meta.json')
 
 def load_doc_metadata(user_id, doc_id):
