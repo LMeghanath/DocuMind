@@ -1,10 +1,20 @@
+"""
+This file contains code for handling user account:
+
+Create account 
+Deleting account
+Password reset
+Login 
+Signup
+
+"""
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import Count
-
 from .models import Profile, Document, Chat, Message
 from .file_upload_utility import delete_doc, delete_all_docs
 from .utils.auth_utils import password_checking, verify_otp, send_otp, clear_sessions_signup, clear_sessions_password_reset

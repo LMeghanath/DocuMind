@@ -1,12 +1,8 @@
 """
-================================================================================
-TEAM EXPORT: Django Views for Modules 4, 5, and 6
-================================================================================
 This file demonstrates how the Preprocessing, extraction, chunking, and FAISS
 storage (Modules 4, 5, 6) are integrated into a Django view pipeline.
 
-Your team can use this as a reference for handling the file parsing and vector
-storage after the user uploads it. To use this code, ensure you have imported 
+To use this code, ensure you have imported 
 the utility logic we provided in `team_export_modules_4_to_6.py`.
 ================================================================================
 """
@@ -14,20 +10,14 @@ the utility logic we provided in `team_export_modules_4_to_6.py`.
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from mainapp.models import Document
 from app.forms import DocumentUploadForm
 from team_export_modules_4_to_6 import extract_and_chunk_file , add_documents_to_store
-
-# Import the consolidated utilities from the team export file
-# (Replace these imports with wherever your team places the functions)
-# from .utils.chunking import extract_and_chunk_file
-# from .utils.faiss_store import add_documents_to_store
 
 @login_required
 def upload_and_process_document(request):
     """
-    View that handles file upload (Module 3) and triggers 
-    Preprocessing (Module 4), Chunking (Module 5), and FAISS Embeddings (Module 6).
+    View that handles file upload and triggers 
+    Preprocessing , Chunking , and FAISS Embeddings .
     """
     if request.method == 'POST':
         form = DocumentUploadForm(request.POST, request.FILES)
