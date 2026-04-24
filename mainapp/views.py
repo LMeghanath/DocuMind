@@ -5,7 +5,7 @@ from .models import Profile,Document,Chat,Message
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .file_upload_utility import delete_doc,delete_all_docs
-from .utils import password_checking,verify_otp,send_otp,clear_sessions_signup,clear_sessions_password_reset
+from .authentication_utils import password_checking,verify_otp,send_otp,clear_sessions_signup,clear_sessions_password_reset
 from django.db.models import Count
 from django.shortcuts import get_object_or_404
 
