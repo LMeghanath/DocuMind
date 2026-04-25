@@ -1,0 +1,82 @@
+{% extends "mainapp/ParentTemplate.html"%}
+
+{% load static %}
+
+{% block title %} DocuMind-Signup{% endblock title %}
+
+{% block extra_css %}<link rel="stylesheet" href="{% static 'mainapp/signup.css' %}">{% endblock extra_css %}
+
+{% block body %}
+<div class="signup-container">
+    <div class="signup-card">
+
+        <h2>Create Account</h2>
+        <p class="subtitle">Join DocuMind</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if request.session.signup_stage == "otp" %}
+
+                <div class="form-group">
+                    <label>Enter OTP</label>
+                    <input type="text" name="otp" placeholder="6-digit OTP" required>
+                </div>
+
+                <button type="submit" class="signup-btn">
+                    Verify OTP
+                </button>
+
+            {% elif request.session.signup_stage == "credentials" %}
+
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" placeholder="Choose a username" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" placeholder="Enter password" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Reenter Password</label>
+                    <input type="password" name="repeat_password" placeholder="Reenter password" required>
+                </div>
+
+                <button type="submit" class="signup-btn">
+                    Create Account
+                </button>
+
+            {% else %}
+
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" placeholder="Enter your email" required>
+                </div>
+
+                <button type="submit" class="signup-btn">
+                    Send OTP
+                </button>
+
+            {% endif %}
+
+        </form>
+
+         <!-- Django Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <br>
+        <div  class="nav-links">
+        <ul style="list-style: none;" >       
+        <li><a href="{% url 'login' %}">Already have an account.</a></li>
+        </ul>    
+        </div>
+    </div>
+</div>
+{% endblock %}
