@@ -12,7 +12,7 @@ def load_or_create_faiss(user_id, doc_id):
     Loads existing FAISS index for a specific document, or creates a new empty one 
     if it doesn't exist yet. Returns None if creating empty.
     """
-    store_dir = get_faiss_store_dir(user_id)
+    store_dir = get_faiss_store_dir(user_id, doc_id)
     embeddings = get_embeddings_model()
     
     # LangChain FAISS save_local creates {index_name}.faiss and {index_name}.pkl
@@ -31,7 +31,7 @@ def save_faiss_and_metadata_atomically(user_id, doc_id, vector_store, custom_met
     """
     Saves both the FAISS index and the JSON metadata to disk for a specific document.
     """
-    store_dir = get_faiss_store_dir(user_id)
+    store_dir = get_faiss_store_dir(user_id, doc_id)
     index_name = str(doc_id)
     try:
         # Save FAISS -> creates {doc_id}.faiss and {doc_id}.pkl

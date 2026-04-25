@@ -1,6 +1,6 @@
 """
 ================================================================================
-TEAM EXPORT: ContextIQ Modules 4, 5, and 6 (Production Ready)
+TEAM EXPORT:  Modules 4, 5, and 6 (Production Ready)
 ================================================================================
 This file contains the complete logic for:
 - MODULE 3.5: Validation (Memory Safety, File Hash, Integrity)
@@ -168,14 +168,16 @@ def extract_and_chunk_file(file_path):
         raise e
 
 
-def get_faiss_store_dir(user_id):
-    """Returns the dir containing the FAISS index files for a user."""
-    user_dir = os.path.join(settings.MEDIA_ROOT, 'indexes', str(user_id))
+def get_faiss_store_dir(user_id, doc_id=None):
+    """Returns the dir containing the FAISS index files for a user or document."""
+    user_dir = os.path.join(settings.INDEX_ROOT, str(user_id))
+    if doc_id is not None:
+        user_dir = os.path.join(user_dir, str(doc_id))
     os.makedirs(user_dir, exist_ok=True)
     return user_dir
 
 def get_doc_metadata_path(user_id, doc_id):
-    return os.path.join(get_faiss_store_dir(user_id), f'{doc_id}_meta.json')
+    return os.path.join(get_faiss_store_dir(user_id, doc_id), f'{doc_id}_meta.json')
 
 def load_doc_metadata(user_id, doc_id):
     path = get_doc_metadata_path(user_id, doc_id)
@@ -244,7 +246,7 @@ def get_embeddings_model():
         raise e
 
 def load_or_create_faiss(user_id, doc_id):
-    store_dir = get_faiss_store_dir(user_id)
+    store_dir = get_faiss_store_dir(user_id, doc_id)
     embeddings = get_embeddings_model()
     index_name = str(doc_id)
     
@@ -258,7 +260,7 @@ def load_or_create_faiss(user_id, doc_id):
 
 def save_faiss_and_metadata_atomically(user_id, doc_id, vector_store, custom_metadata_dict):
     """Saves FAISS index and JSON metadata securely with full rollback capability."""
-    store_dir = get_faiss_store_dir(user_id)
+    store_dir = get_faiss_store_dir(user_id, doc_id)
     try:
         vector_store.save_local(store_dir, index_name=str(doc_id))
         
@@ -304,7 +306,7 @@ def add_documents_to_store(user_id, doc_id, chunks):
 def delete_document_indexes(user_id, doc_id):
     """Safely deletes vector index files to completely wipe out specific document."""
     try:
-        store_dir = get_faiss_store_dir(user_id)
+        store_dir = get_faiss_store_dir(user_id, doc_id)
         if not os.path.exists(store_dir):
             return False
             

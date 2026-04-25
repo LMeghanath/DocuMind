@@ -34,6 +34,9 @@ ALLOWED_HOSTS = []
 MEDIA_ROOT=BASE_DIR/"media"
 MEDIA_URL="/media/"
 
+DOCUMENT_ROOT = MEDIA_ROOT / "documents"
+INDEX_ROOT= MEDIA_ROOT / "indexes"
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',

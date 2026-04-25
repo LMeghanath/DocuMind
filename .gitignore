@@ -1,8 +1,17 @@
 venv/
 __pycache__/
+mainapp/migrations/__pycache__/*
+mainapp/__pycache__/*
+app/__pycache__/*
+app/migrations/__pycache__/*
 db.sqlite3
+utils/__pycache__/*
+config/__pycache__/*
 .env
 staticfiles/
 .vscode/
+Workflow_Project_plan.docx
 media/documents/*
 !media/documents/.gitkeep
+media/indexes/*
+!media/indexes/.gitkeep

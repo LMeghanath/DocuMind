@@ -97,6 +97,3 @@ def send_custom_email(subject, message, recipient_email): #can raise exception
         recipient_list=[recipient_email],
         fail_silently=False,
     )
-
-               
-

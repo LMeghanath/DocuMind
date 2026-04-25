@@ -2,7 +2,7 @@ import os
 import hashlib
 import fitz  # PyMuPDF
 import logging
-from app.models import Document
+from mainapp.models import Document
 
 logger = logging.getLogger(__name__)
 
