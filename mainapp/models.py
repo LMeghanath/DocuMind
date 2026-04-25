@@ -57,7 +57,7 @@ class QueryLog(models.Model):
 class Chat(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE)
     chat_time=models.DateTimeField(auto_now_add=True)
-    chat_title=models.CharField(max_length=200,default="New Chat")
+    chat_title=models.CharField(max_length=200,default="Untitled Chat")
     class Meta:
         ordering=["-chat_time"]
 

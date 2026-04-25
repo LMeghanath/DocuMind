@@ -25,30 +25,32 @@ def user_query_processing(request, chat_id):
             message_text=message
         )
 
-        if chat.chat_title == "New Chat":
+        if chat.chat_title == "Untitled Chat":
             chat.chat_title = message[:60]
             chat.save()
 
         from .utils.faiss_store import load_or_create_faiss
         
-        # Build context from FAISS using scored retrieval with threshold
         SIMILARITY_THRESHOLD = 0.8  # lower score = more similar in FAISS L2 distance
         context_parts = []
         for doc_id_str in user_selected_docs:
             try:
+                # Fetch original file name from database for clean citations
+                from .models import Document
+                db_doc = Document.objects.filter(id=int(doc_id_str), user=request.user).first()
+                display_source = db_doc.display_name if db_doc else "Unknown Document"
+
                 vector_store = load_or_create_faiss(request.user.id, int(doc_id_str))
                 if vector_store:
                     results = vector_store.similarity_search_with_score(message, k=4)
                     for doc, score in results:
-                        if score <= SIMILARITY_THRESHOLD:
-                            # Label each chunk with its source filename for citation
-                            source = doc.metadata.get("source", "Unknown Document")
-                            context_parts.append(
-                                f"SOURCE: {source}\nCONTENT: {doc.page_content}"
-                            )
+                        # We removed the strict score limit here so the LLM always gets some context to work with.
+                        context_parts.append(
+                            f"SOURCE: {display_source}\nCONTENT: {doc.page_content}"
+                        )
             except Exception as e:
                 pass
-
+        
         # Join chunks with a clear separator, or signal nothing was found
         context = "\n\n---\n\n".join(context_parts) if context_parts else "Not in documents"
 
@@ -56,9 +58,11 @@ def user_query_processing(request, chat_id):
         try:
             from .utils.llm_integration import generate_response
             ai_response = generate_response(query=message, context=context)
+            print("\n\n\n\n\n"+f"final context {context}")
         except Exception as e:
+            print(e)
             ai_response = f"Failed to call LLM: {str(e)}"
-
+        
         Message.objects.create(
             chat=chat,
             role="assistant",
