@@ -114,16 +114,16 @@ python manage.py runserver
 ## Screenshots
 
 ### Home Page
-![Home Page](screenshots/home.png)
+![Home Page](screenshots/homepage.bmp)
 
 ### Login Page
-![Login Page](screenshots/login.png)
+![Login Page](screenshots/loginpage.bmp)
 
 ### Document Upload
-![Document Upload](screenshots/upload.png)
+![Document Upload](screenshots/documentUploadScreen.bmp)
 
 ### Query Screen
-![Query Screen](screenshots/query.png)
+![Query Screen](screenshots/queryscreen.bmp)
 
 ---
 ## License
