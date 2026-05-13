@@ -55,23 +55,6 @@ Answer ← LLM ← Filter ← Retrieve ← Embed ← Intent ← Query
 
 ---
 
-## Project Structure
-
-```
-DocuMind/
-├── backend/
-│   ├── api/               # Django REST API views and routes
-│   ├── retrieval/         # FAISS indexing and semantic search
-│   ├── classifier/        # Intent classification model
-│   ├── processing/        # Text extraction, chunking, embedding
-│   └── monitoring/        # Query logging and system monitoring
-├── db.sqlite3
-├── manage.py
-└── requirements.txt
-```
-
----
-
 ## Getting Started
 
 ### Prerequisites
